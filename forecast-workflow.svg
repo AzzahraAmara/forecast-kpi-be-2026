@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1480" viewBox="0 0 1600 1480" role="img" aria-labelledby="title description">
+  <title id="title">Forecast KPI BE 2026 - Workflow</title>
+  <desc id="description">Flowchart showing authorized service account access, historical KPI data retrieval, forecasting for four metrics, combining forecast with actual data, BigQuery table updates, and validation and backtesting.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#111c32"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#183b69"/>
+      <stop offset="1" stop-color="#174e62"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#6ba6c8"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#55c59b"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #edf4ff; }
+      .eyebrow { font-size: 15px; font-weight: 700; letter-spacing: 3px; fill: #78c9d4; }
+      .title { font-size: 42px; font-weight: 700; }
+      .subtitle { font-size: 19px; fill: #aabbd2; }
+      .card { fill: #17243a; stroke: #2b3d58; stroke-width: 2; }
+      .card-hero { fill: url(#hero); stroke: #3a7990; stroke-width: 2; }
+      .card-green { fill: #142e31; stroke: #317e70; stroke-width: 2; }
+      .card-purple { fill: #25213c; stroke: #514783; stroke-width: 2; }
+      .card-orange { fill: #352a20; stroke: #8b6740; stroke-width: 2; }
+      .heading { font-size: 21px; font-weight: 700; }
+      .body { font-size: 16px; fill: #bfccdc; }
+      .small { font-size: 14px; fill: #9fb0c6; }
+      .metric { font-size: 20px; font-weight: 700; }
+      .metric-desc { font-size: 14px; fill: #bac8d9; }
+      .number { font-size: 15px; font-weight: 700; fill: #0c1726; }
+      .arrow { fill: none; stroke: #6ba6c8; stroke-width: 3; marker-end: url(#arrow); }
+      .arrow-green { fill: none; stroke: #55c59b; stroke-width: 3; marker-end: url(#arrowGreen); }
+      .dashed { fill: none; stroke: #ab91e8; stroke-width: 2.5; stroke-dasharray: 8 8; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1480" fill="url(#background)"/>
+  <circle cx="1435" cy="170" r="220" fill="#174e62" opacity=".12"/>
+  <circle cx="160" cy="1280" r="260" fill="#514783" opacity=".10"/>
+
+  <text x="100" y="82" class="eyebrow">PORTFOLIO PROJECT · DATA WORKFLOW</text>
+  <text x="100" y="140" class="title">Forecast KPI BE 2026</text>
+  <text x="100" y="178" class="subtitle">From historical KPI data to forecast tables and validation</text>
+
+  <rect x="100" y="220" width="1400" height="112" rx="22" class="card-hero"/>
+  <circle cx="145" cy="276" r="22" fill="#8de0d4"/>
+  <text x="145" y="282" text-anchor="middle" class="number">01</text>
+  <text x="185" y="267" class="heading">Authorized environment</text>
+  <text x="185" y="298" class="body">Service account authentication through Application Default Credentials (ADC)</text>
+  <rect x="1170" y="254" width="276" height="42" rx="21" fill="#0c2537" stroke="#4c91a0"/>
+  <text x="1308" y="281" text-anchor="middle" class="small" fill="#b9ece2">Credentials managed outside notebook</text>
+
+  <path d="M800 332 V372" class="arrow"/>
+
+  <rect x="100" y="380" width="1400" height="164" rx="22" class="card"/>
+  <circle cx="145" cy="426" r="22" fill="#8dc8e7"/>
+  <text x="145" y="432" text-anchor="middle" class="number">02</text>
+  <text x="185" y="420" class="heading">Retrieve historical source data</text>
+  <text x="185" y="448" class="body">Query relevant fields and periods from authorized source tables</text>
+  <rect x="185" y="474" width="266" height="42" rx="12" fill="#20324b"/>
+  <rect x="475" y="474" width="266" height="42" rx="12" fill="#20324b"/>
+  <rect x="765" y="474" width="266" height="42" rx="12" fill="#20324b"/>
+  <rect x="1055" y="474" width="266" height="42" rx="12" fill="#20324b"/>
+  <text x="318" y="501" text-anchor="middle" class="body">Retention Rate (RR)</text>
+  <text x="608" y="501" text-anchor="middle" class="body">Customer Value (CV)</text>
+  <text x="898" y="501" text-anchor="middle" class="body">Linkage Rate (LR)</text>
+  <text x="1188" y="501" text-anchor="middle" class="body">NCLCO</text>
+
+  <path d="M800 544 V588" class="arrow"/>
+
+  <rect x="280" y="596" width="1040" height="104" rx="22" class="card"/>
+  <circle cx="328" cy="648" r="22" fill="#8dc8e7"/>
+  <text x="328" y="654" text-anchor="middle" class="number">03</text>
+  <text x="370" y="640" class="heading">Prepare and organize metric data</text>
+  <text x="370" y="671" class="body">Parse dates · sort historical periods · calculate relevant rates and measures</text>
+
+  <path d="M800 700 V742 H275 V772" class="arrow"/>
+  <path d="M800 742 H625 V772" class="arrow"/>
+  <path d="M800 742 H975 V772" class="arrow"/>
+  <path d="M800 742 H1325 V772" class="arrow"/>
+
+  <rect x="100" y="780" width="350" height="146" rx="20" class="card-green"/>
+  <text x="275" y="823" text-anchor="middle" class="metric">Retention Rate</text>
+  <text x="275" y="852" text-anchor="middle" class="metric-desc">Repurchase-rate forecast</text>
+  <text x="275" y="881" text-anchor="middle" class="small">Forecast by relevant segments</text>
+
+  <rect x="450" y="780" width="350" height="146" rx="20" class="card-green"/>
+  <text x="625" y="823" text-anchor="middle" class="metric">Customer Value</text>
+  <text x="625" y="852" text-anchor="middle" class="metric-desc">Customer-value forecast</text>
+  <text x="625" y="881" text-anchor="middle" class="small">Project value over future periods</text>
+
+  <rect x="800" y="780" width="350" height="146" rx="20" class="card-green"/>
+  <text x="975" y="823" text-anchor="middle" class="metric">Linkage Rate</text>
+  <text x="975" y="852" text-anchor="middle" class="metric-desc">Linkage-rate forecast</text>
+  <text x="975" y="881" text-anchor="middle" class="small">Forecast by period and pair</text>
+
+  <rect x="1150" y="780" width="350" height="146" rx="20" class="card-green"/>
+  <text x="1325" y="823" text-anchor="middle" class="metric">NCLCO</text>
+  <text x="1325" y="852" text-anchor="middle" class="metric-desc">NCLCO-related forecast</text>
+  <text x="1325" y="881" text-anchor="middle" class="small">Forecast and allocation logic</text>
+
+  <path d="M275 926 V962 H1325" fill="none" stroke="#6ba6c8" stroke-width="3"/>
+  <path d="M625 926 V962" fill="none" stroke="#6ba6c8" stroke-width="3"/>
+  <path d="M975 926 V962" fill="none" stroke="#6ba6c8" stroke-width="3"/>
+  <path d="M1325 926 V962" fill="none" stroke="#6ba6c8" stroke-width="3"/>
+  <path d="M800 962 V995" class="arrow"/>
+
+  <rect x="280" y="1003" width="1040" height="96" rx="22" class="card-purple"/>
+  <circle cx="328" cy="1051" r="22" fill="#c6b3ff"/>
+  <text x="328" y="1057" text-anchor="middle" class="number">04</text>
+  <text x="370" y="1044" class="heading">Append forecasts to actual data</text>
+  <text x="370" y="1073" class="body">Combine historical actuals and forecast records for each KPI</text>
+
+  <path d="M800 1099 V1134" class="arrow"/>
+
+  <rect x="280" y="1142" width="1040" height="96" rx="22" class="card"/>
+  <circle cx="328" cy="1190" r="22" fill="#8dc8e7"/>
+  <text x="328" y="1196" text-anchor="middle" class="number">05</text>
+  <text x="370" y="1183" class="heading">Create or update BigQuery tables</text>
+  <text x="370" y="1212" class="body">Write the combined forecast dataset to authorized destinations</text>
+
+  <path d="M800 1238 V1273" class="arrow-green"/>
+
+  <rect x="100" y="1281" width="900" height="118" rx="22" class="card-orange"/>
+  <circle cx="148" cy="1340" r="22" fill="#f3bd75"/>
+  <text x="148" y="1346" text-anchor="middle" class="number">06</text>
+  <text x="190" y="1325" class="heading">Validate and reconcile</text>
+  <text x="190" y="1354" class="body">Validation and consistency checks across forecast outputs</text>
+  <text x="190" y="1380" class="small">Company-specific validation code is omitted from the public copy</text>
+
+  <rect x="1030" y="1281" width="470" height="118" rx="22" class="card-purple"/>
+  <text x="1265" y="1325" text-anchor="middle" class="heading">Rolling-window backtests</text>
+  <text x="1265" y="1354" text-anchor="middle" class="body">Compare rolling allocation approaches</text>
+  <text x="1265" y="1380" text-anchor="middle" class="small">Notebook implementation omitted from the public copy</text>
+  <path d="M1000 1340 H1020" class="dashed"/>
+
+  <text x="800" y="1440" text-anchor="middle" class="small">Source data and internal resource identifiers are not included in this diagram.</text>
+</svg>
