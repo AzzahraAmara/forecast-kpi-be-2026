@@ -1,38 +1,76 @@
-# Forecast KPI BE 2026
+# Forecast BE KPI 2026 - Synthetic Demo
 
-A Jupyter notebook demonstrating a KPI forecasting workflow for 2026, from historical source-data retrieval and metric-level forecasts to combining forecasts with actuals and preparing BigQuery outputs.
+A runnable, synthetic-data demonstration of the Forecast BE KPI workflow. All sample values and segment labels in this repository are fabricated; they are not company data or business results.
 
 ![Forecast KPI workflow](forecast-workflow.png)
 
-## Forecast metrics
+## Metrics
 
-The notebook covers:
+- **RR - Retention Rate:** repeat successful transactions divided by total successful transactions.
+- **CV - Customer Value:** GMV divided by unique customers.
+- **LR - Linkage Rate:** leads divided by base.
+- **NC - New Customer**
+- **LC - Loyal Customer**
+- **LCO - Loyal Customer Other**
+- **NCLCO:** `NC + LCO`
+- **Usership:** `NC + LC + LCO`
 
-- **Retention Rate (RR):** repurchase-rate forecasting
-- **Customer Value (CV):** customer-value forecasting
-- **Linkage Rate (LR):** linkage-rate forecasting
-- **NCLCO:** source-data retrieval and a high-level description of the forecasting workflow
+## Run the demo
 
-## Workflow
+The production workflow retrieves actuals from BigQuery. A BigQuery query is included as a comment in [`forecast_demo.py`](forecast_demo.py) to document that workflow step, but the demo does not connect to BigQuery, a database, or any network service. It generates sample actuals locally and writes:
 
-1. Retrieve relevant historical data for each metric from authorized source tables.
-2. Prepare and forecast RR, CV, and LR using metric-specific logic.
-3. Combine forecast records with actual data.
-4. Prepare forecast outputs for BigQuery.
-5. Review validation and rolling-window backtesting approaches described in the notebook.
+- [`data/synthetic_history.csv`](data/synthetic_history.csv)
+- [`data/synthetic_forecast.csv`](data/synthetic_forecast.csv)
 
-## BigQuery authentication
+Requires Python 3.10+ and NumPy:
 
-BigQuery authentication is intended to use a **service account** configured through Application Default Credentials (ADC) in an authorized environment. The notebook does not include a service-account key or other credentials. Never commit secrets or credential files.
+```powershell
+py -m pip install numpy
+py forecast_demo.py --history-months 12 --seed 2026 --as-of 2026-07-01
+```
 
-Internal BigQuery project, dataset, and table identifiers have been replaced with generic placeholders. Configure placeholders only with resources you are authorized to access.
+For the example above, synthetic actuals run through June 2026; forecasts run from July through December 2026. Generated sample data can be reproduced with the same seed and parameters.
 
-## Public-copy scope
+### Script parameters
 
-Company-specific NCLCO product/channel hierarchies, brand diagnostics, SQL Server connection details, source queries, and database-specific allocation/reconciliation code have been omitted. The notebook explains where those steps fit in the workflow; no dummy or source data is included. To run a complete workflow, implement the omitted data adapters and mappings using approved resources and authorization.
+| Parameter | Meaning | Default |
+|---|---|---:|
+| `--history-months` | Number of synthetic monthly actuals before the forecast month. | `12` |
+| `--seed` | Seed controlling the generated synthetic input values. | `2026` |
+| `--as-of` | Forecast run date (`YYYY-MM-DD`). Actual history ends in the previous month; forecast starts in this date's month and runs through December. | Today |
+| `--output-dir` | Folder for the generated CSV files. | `./data` |
 
-The original source notebook was left unchanged. This portfolio copy has saved cell outputs removed, embedded password values replaced, and internal BigQuery identifiers anonymized. Confirm that you are authorized to publish the remaining notebook content before sharing it publicly.
+## CSV fields
 
-## Requirements
+The history CSV includes:
 
-Run the notebook in a Python/Jupyter environment with its required libraries installed, including pandas, NumPy, and the Google Cloud BigQuery client. Access to BigQuery resources must be granted separately.
+| Field | Meaning |
+|---|---|
+| `period` | First day of the month represented by the row. |
+| `channel` | Synthetic channel: `Supermarket` or `Online`. |
+| `product_category` | Synthetic product: `Susu Cokelat`, `Susu Vanila`, or `Susu Stroberi`. |
+| `repeat_transactions`, `total_transactions` | Synthetic numerator and denominator used to calculate RR. |
+| `gmv`, `unique_customers` | Synthetic numerator and denominator used to calculate CV. |
+| `leads`, `base` | Synthetic numerator and denominator used to calculate LR. |
+| `NC`, `LC`, `LCO` | Synthetic monthly customer volumes. |
+| `NCLCO`, `Usership` | Derived totals: `NC + LCO` and `NC + LC + LCO`. |
+| `RR`, `CV`, `LR` | Derived KPI values. RR and LR are rates; CV is a synthetic value per customer, not real currency data. |
+
+The forecast CSV contains the period, channel, product, record type, and forecast values. `ALL_FOCUS_TOTAL` rows sum the three example product categories within a channel. RR, CV, and LR are left blank in those total rows because rates and per-customer values should not be added across products.
+
+## Forecast logic
+
+RR, CV, and LR use the same core formulas and forecast approaches documented in the source workflow:
+
+- **RR:** use the maximum rate in up to the latest 18 actual observations as the recovery peak. The recovery factor is `0.30` with fewer than 6 observations, `0.50` with 6-11, and `0.60` with 12 or more. Forecast values move linearly from the latest actual toward the target through December.
+- **CV:** with at least 6 observations, estimate monthly growth from the first and last values in the latest 6; with 3-5 observations, average the available month-to-month growth rates; with fewer than 3, use `1%`. Clamp monthly growth to `0.5%-3%`.
+- **LR:** use the mean of the three highest actual rates as the recovery peak, apply the same history-length recovery factors as RR, and clamp the rate to `0-1`.
+- **NC, LC, and LCO:** start from the latest positive actual value and forecast month by month. A stable seed is derived from the synthetic channel, product, and metric. Baselines below `50` use seeded monthly growth from `0%-1%`; other baselines use `2%-3%`. Values are rounded to whole numbers. NCLCO and Usership are calculated from the projected components.
+
+The volume RNG follows the source workflow's deterministic per-segment pattern. The sample outputs are still synthetic and are not forecasts of company performance.
+
+## Scope and limitations
+
+The script demonstrates formulas and forecasting behavior with fabricated data. It does **not** reproduce production results or the complete production pipeline. Company-specific source tables, product/channel hierarchies, exclusion rules, and allocation/reconciliation mappings are not included. `ALL FOCUS PRODUCTS` is only a generic sum across the three sample products.
+
+The original notebook is intentionally excluded from the GitHub version; see `.gitignore`. The diagram is retained as a workflow illustration.
